@@ -11,7 +11,6 @@ sendMessage("core:set-event-link", [
 addMessageListener("recognition:start-listening", { s, t, data ->
     sendMessage("DeskChan:say", "Говори")
     try {
-        println('python "' + getPluginDirPath().resolve("Recognize.py").toString() +'" ' + data)
         Process process = ('python "' + getPluginDirPath().resolve("Recognize.py").toString() +'" ' + data).execute()
         Thread.start {
             process.waitFor()
