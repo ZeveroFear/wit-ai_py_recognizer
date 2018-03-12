@@ -11,15 +11,14 @@ sendMessage("core:set-event-link", [
 addMessageListener("recognition:start-listening", { s, t, data ->
     sendMessage("DeskChan:say", "Говори")
     try {
-        Process process = ('python "' + getPluginDirPath().resolve("Recognize.py").toString() +'" ' + data).execute()
+        Process process = ('python Recognize.py ' + data).execute(null, getPluginDirPath().toFile())
         Thread.start {
             process.waitFor()
-            String text = process.text
             if (process.exitValue() == 0)
-                sendMessage("gui:raise-user-balloon", [value: text])
+                sendMessage("gui:raise-user-balloon", [value: process.text])
             else {
                 sendMessage("DeskChan:say", "Ой, что-то не получилось. Код ошибки: " + process.exitValue())
-                log(text)
+                log(process.errorStream.text)
             }
         }
     } catch (Exception e){
