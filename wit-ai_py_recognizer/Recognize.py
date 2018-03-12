@@ -2,6 +2,7 @@ import requests
 import json
 from Recorder import record_audio, read_audio
 import sys
+import os
 
 # Wit speech API endpoint
 API_ENDPOINT = 'https://api.wit.ai/speech'
@@ -39,12 +40,19 @@ def RecognizeSpeech(AUDIO_FILENAME, num_seconds = 3):
  
 if __name__ == "__main__":
     argv = sys.argv
+    
     time = 3
     try:
         time = int(argv[1])
     except:
         pass
-    text = RecognizeSpeech('myspeech.wav', time)
+        
+    path = 'speech.wav'
+    text = RecognizeSpeech(path, time)
     print(text)
+    try:
+        os.remove(path)
+    except:
+        pass
     #print("\nYou said: {}".format(text))
     
